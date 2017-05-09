@@ -61,9 +61,9 @@ WorldRenderer.prototype = new EventEmitter();
 
 WorldRenderer.prototype.render = function(time) {
   this.controls.update();
-  this.hotspotRenderer.update(this.camera);
   TWEEN.update(time);
   this.effect.render(this.scene, this.camera);
+  this.hotspotRenderer.update(this.camera);
 };
 
 /**
@@ -276,7 +276,7 @@ WorldRenderer.prototype.onVRDisplayPresentChange_ = function(e) {
 
   // If the mode changed to VR and there is at least one hotspot, show reticle.
   var isReticleVisible = isVR && this.hotspotRenderer.getCount() > 0;
-  //this.reticleRenderer.setVisibility(isReticleVisible);
+  this.reticleRenderer.setVisibility(isReticleVisible);
 
   // Resize the renderer for good measure.
   this.onResize_();
