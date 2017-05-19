@@ -98,33 +98,54 @@ SphereRenderer.prototype.setOpacity = function(opacity, duration) {
 };
 
 SphereRenderer.prototype.onTextureLoaded_ = function(texture) {
-  var sphereLeft;
-  var sphereRight;
-  if (this.isStereo) {
-    sphereLeft = this.createPhotosphere_(texture, {offsetY: 0.5, scaleY: 0.5});
-    sphereRight = this.createPhotosphere_(texture, {offsetY: 0, scaleY: 0.5});
+  
+  if ( this.sphereLeft ) {
+
+    if ( this.isStereo ) {
+
+      this.updatePhotosphere_( this.sphereLeft, texture, { offsetY: 0.5, scaleY: 0.5 } );
+      this.updatePhotosphere_( this.sphereRight, texture, { offsetY: 0, scaleY: 0.5 } );
+
+    } else {
+
+      this.updatePhotosphere_( this.sphereLeft, texture, 0, 1 );
+      this.updatePhotosphere_( this.sphereRight, texture, 0, 1 );
+    }
+
+    this.resolve();
+    
   } else {
-    sphereLeft = this.createPhotosphere_(texture);
-    sphereRight = this.createPhotosphere_(texture);
+
+    if ( this.isStereo ) {
+      
+      this.sphereLeft = this.createPhotosphere_( texture, { offsetY: 0.5, scaleY: 0.5 } );
+      this.sphereRight = this.createPhotosphere_( texture, { offsetY: 0, scaleY: 0.5 } );
+      
+    } else {
+      
+      this.sphereLeft = this.createPhotosphere_( texture );
+      this.sphereRight = this.createPhotosphere_( texture );
+    }
+
+    // Display in left and right eye respectively.
+    this.sphereLeft.layers.set( Eyes.LEFT );
+    this.sphereLeft.eye = Eyes.LEFT;
+    this.sphereRight.layers.set( Eyes.RIGHT );
+    this.sphereRight.eye = Eyes.RIGHT;
+
+    this.scene.getObjectByName( 'photo' ).children = [ this.sphereLeft, this.sphereRight ];
+
+    this.resolve();
   }
-
-  // Display in left and right eye respectively.
-  sphereLeft.layers.set(Eyes.LEFT);
-  sphereLeft.eye = Eyes.LEFT;
-  sphereRight.layers.set(Eyes.RIGHT);
-  sphereRight.eye = Eyes.RIGHT;
-
-  this.scene.getObjectByName('photo').children = [sphereLeft, sphereRight];
-
-  this.resolve();
+  
 };
 
 SphereRenderer.prototype.onTextureError_ = function(error) {
   this.reject('Unable to load texture from "' + this.src + '"');
 };
 
+SphereRenderer.prototype.createGeometry = function ( opt_params ) {
 
-SphereRenderer.prototype.createPhotosphere_ = function(texture, opt_params) {
   var p = opt_params || {};
   p.scaleX = p.scaleX || 1;
   p.scaleY = p.scaleY || 1;
@@ -136,8 +157,10 @@ SphereRenderer.prototype.createPhotosphere_ = function(texture, opt_params) {
   p.thetaLength = p.thetaLength || Math.PI;
 
   var geometry = new THREE.SphereGeometry(1, 48, 48,
-      p.phiStart, p.phiLength, p.thetaStart, p.thetaLength);
+    p.phiStart, p.phiLength, p.thetaStart, p.thetaLength);
+
   geometry.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+
   var uvs = geometry.faceVertexUvs[0];
   for (var i = 0; i < uvs.length; i ++) {
     for (var j = 0; j < 3; j ++) {
@@ -148,9 +171,24 @@ SphereRenderer.prototype.createPhotosphere_ = function(texture, opt_params) {
     }
   }
 
-  var material = new THREE.MeshBasicMaterial({ map: texture });
-  var out = new THREE.Mesh(geometry, material);
-  //out.visible = false;
+  return geometry
+}
+
+SphereRenderer.prototype.updatePhotosphere_ = function ( sphere, texture, opt_params ) {
+
+  sphere.geometry = this.createGeometry( opt_params );
+  sphere.material.map.dispose();
+  sphere.material.dispose();
+  sphere.material = new THREE.MeshBasicMaterial({ map: texture });
+  sphere.material.needsUpdate = true;
+}
+
+SphereRenderer.prototype.createPhotosphere_ = function(texture, opt_params) {
+
+  var out = new THREE.Mesh(
+    this.createGeometry( opt_params ),
+    new THREE.MeshBasicMaterial({ map: texture })
+  );
   out.renderOrder = -1;
   return out;
 };

@@ -4,22 +4,22 @@
   "description": "Embed VR content into your webpage.",
   "main": "index.js",
   "dependencies": {
-    "es6-promise": "^3.0.2",
-    "eventemitter3": "^1.2.0",
-    "shaka-player": "^2.0.0",
+    "es6-promise": "^4.1.0",
+    "eventemitter3": "^2.0.3",
+    "shaka-player": "^2.1.1",
     "stats-js": "^1.0.0-alpha1",
-    "three": "^0.84.0",
-    "tween.js": "^16.3.4",
-    "urijs": "^1.18.2",
-    "webvr-boilerplate": "^0.4.6",
-    "webvr-polyfill": "^0.9.26"
+    "three": "^0.85.2",
+    "tween.js": "^16.6.0",
+    "urijs": "^1.18.10",
+    "webvr-boilerplate": "^0.4.9",
+    "webvr-polyfill": "^0.9.27"
   },
   "devDependencies": {
-    "browserify": "^13.1.1",
+    "browserify": "^14.3.0",
     "derequire": "^2.0.6",
-    "rollup": "^0.37.2",
-    "uglifyjs": "^2.4.10",
-    "watchify": "^3.8.0"
+    "rollup": "^0.41.6",
+    "uglifyjs": "^2.4.11",
+    "watchify": "^3.9.0"
   },
   "scripts": {
     "build": "browserify src/embed/with-analytics.js | derequire | uglifyjs -c > build/embed.min.js && npm run build-three-closure",
