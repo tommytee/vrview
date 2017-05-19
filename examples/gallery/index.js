@@ -89,6 +89,9 @@ function onVRViewReady(e) {
   }
 
   loadScene('petra');
+
+  testSwitch( scenes );
+
 }
 
 function onModeChange(e) {

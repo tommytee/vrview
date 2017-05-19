@@ -131,6 +131,8 @@ function onLoad() {
 function onVRViewReady(e) {
   console.log('onVRViewReady');
   loadScene('walrus');
+
+  testSwitch( scenes );
 }
 
 function onModeChange(e) {

@@ -97,9 +97,12 @@ SphereRenderer.prototype.setOpacity = function(opacity, duration) {
   });
 };
 
+var sphereLeft;
+var sphereRight;
+
 SphereRenderer.prototype.onTextureLoaded_ = function(texture) {
   
-  if ( this.sphereLeft ) {
+  if ( this.sphereLeft  ) {
 
     if ( this.isStereo ) {
 
@@ -176,6 +179,7 @@ SphereRenderer.prototype.createGeometry = function ( opt_params ) {
 
 SphereRenderer.prototype.updatePhotosphere_ = function ( sphere, texture, opt_params ) {
 
+  sphere.geometry.dispose();
   sphere.geometry = this.createGeometry( opt_params );
   sphere.material.map.dispose();
   sphere.material.dispose();
@@ -185,6 +189,7 @@ SphereRenderer.prototype.updatePhotosphere_ = function ( sphere, texture, opt_pa
 
 SphereRenderer.prototype.createPhotosphere_ = function(texture, opt_params) {
 
+  console.log( 'createPhotosphere_' );
   var out = new THREE.Mesh(
     this.createGeometry( opt_params ),
     new THREE.MeshBasicMaterial({ map: texture })
