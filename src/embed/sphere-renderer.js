@@ -176,6 +176,7 @@ SphereRenderer.prototype.createGeometry = function ( opt_params ) {
 
 SphereRenderer.prototype.updatePhotosphere_ = function ( sphere, texture, opt_params ) {
 
+  sphere.geometry.dispose();
   sphere.geometry = this.createGeometry( opt_params );
   sphere.material.map.dispose();
   sphere.material.dispose();
