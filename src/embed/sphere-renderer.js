@@ -97,9 +97,6 @@ SphereRenderer.prototype.setOpacity = function(opacity, duration) {
   });
 };
 
-var sphereLeft;
-var sphereRight;
-
 SphereRenderer.prototype.onTextureLoaded_ = function(texture) {
   
   if ( this.sphereLeft  ) {
