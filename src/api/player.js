@@ -62,6 +62,7 @@ Player.prototype = new EventEmitter();
  * @param distance {Number} The distance of the hotspot from camera, specified
  * in meters.
  * @param hotspotId {String} The ID of the hotspot.
+ * @param src {String} The url of an image
  */
 Player.prototype.addHotspot = function(hotspotId, params) {
   // TODO: Add validation to params.
@@ -70,7 +71,8 @@ Player.prototype.addHotspot = function(hotspotId, params) {
     yaw: params.yaw,
     radius: params.radius,
     distance: params.distance,
-    id: hotspotId
+    id: hotspotId,
+    src: this.getDirName_() + '/' + params.src
   };
   this.sender.send({type: Message.ADD_HOTSPOT, data: data});
 };

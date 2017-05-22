@@ -23,20 +23,23 @@ var scenes = {
       whaleRight: {
         pitch: 0,
         yaw: 110,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-01.png'
       },
       whaleLeft: {
         pitch: 0,
         yaw: 150,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-02.png'
       },
       walrus: {
         pitch: 0,
         yaw: 170,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-03.png'
       }
     }
   },
@@ -47,20 +50,23 @@ var scenes = {
       whaleRight: {
         pitch: 0,
         yaw: 125,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-01.png'
       },
       dolphins: {
         pitch: 0,
         yaw: 110,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-02.png'
       },
       walrus: {
         pitch: 0,
         yaw: 30,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-03.png'
       }
     }
   },
@@ -71,20 +77,23 @@ var scenes = {
       dolphins: {
         pitch: 0,
         yaw: 305,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-01.png'
       },
       whaleLeft: {
         pitch: 0,
         yaw: 180,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-02.png'
       },
       walrus: {
         pitch: 0,
         yaw: 210,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-03.png'
       }
     }
   },
@@ -95,20 +104,23 @@ var scenes = {
       whaleLeft: {
         pitch: 0,
         yaw: 20,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-01.png'
       },
       whaleRight: {
         pitch: 0,
         yaw: 340,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-02.png'
       },
       dolphins: {
         pitch: 0,
         yaw: 320,
-        radius: 0.05,
-        distance: 1
+        radius: 0.08,
+        distance: 1,
+        src: 'dolphin-icon-03.png'
       }
     }
   }
@@ -146,6 +158,7 @@ function onHotspotClick(e) {
 
 function loadScene(id) {
   console.log('loadScene', id);
+  console.log( scenes[id].image );
 
   // Set the image
   vrView.setContent({
@@ -166,7 +179,8 @@ function loadScene(id) {
       pitch: hotspot.pitch,
       yaw: hotspot.yaw,
       radius: hotspot.radius,
-      distance: hotspot.distance
+      distance: hotspot.distance,
+      src: hotspot.src
     });
   }
 }

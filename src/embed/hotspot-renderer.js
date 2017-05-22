@@ -91,14 +91,16 @@ HotspotRenderer.prototype = new EventEmitter();
  * in meters.
  * @param hotspotId {String} The ID of the hotspot.
  */
-HotspotRenderer.prototype.add = function(pitch, yaw, radius, distance, id) {
+HotspotRenderer.prototype.add = function(pitch, yaw, radius, distance, id, src) {
+
+  //console.log( 'src = ',src);
   // If a hotspot already exists with this ID, stop.
   if (this.hotspots[id]) {
     // TODO: Proper error reporting.
     console.error('Attempt to add hotspot with existing id %s.', id);
     return;
   }
-  var hotspot = this.createHotspot_(radius, distance);
+  var hotspot = this.createHotspot_(radius, distance, src);
   hotspot.name = id;
 
   // Position the hotspot based on the pitch and yaw specified.
@@ -280,7 +282,7 @@ HotspotRenderer.prototype.getSize_ = function() {
   return this.worldRenderer.renderer.getSize();
 };
 
-HotspotRenderer.prototype.createHotspot_ = function(radius, distance) {
+HotspotRenderer.prototype.createHotspot_ = function(radius, distance, src) {
   var innerGeometry = new THREE.CircleGeometry(radius, 32);
 
   var innerMaterial = new THREE.MeshBasicMaterial({
@@ -291,13 +293,13 @@ HotspotRenderer.prototype.createHotspot_ = function(radius, distance) {
   var inner = new THREE.Mesh(innerGeometry, innerMaterial);
   inner.name = 'inner';
 
-  var outerMaterial = new THREE.MeshBasicMaterial({
+  /*var outerMaterial = new THREE.MeshBasicMaterial({
     color: 0xffffff, side: THREE.DoubleSide, transparent: true,
     opacity: MAX_OUTER_OPACITY, depthTest: false
   });
   var outerGeometry = new THREE.RingGeometry(radius * 0.85, radius, 32);
   var outer = new THREE.Mesh(outerGeometry, outerMaterial);
-  outer.name = 'outer';
+  outer.name = 'outer';*/
 
   // Position at the extreme end of the sphere.
   var hotspot = new THREE.Object3D();
@@ -305,9 +307,23 @@ HotspotRenderer.prototype.createHotspot_ = function(radius, distance) {
   hotspot.scale.copy(NORMAL_SCALE);
 
   hotspot.add(inner);
-  hotspot.add(outer);
+  //hotspot.add(outer);
+
+  if ( src ) {
+
+    //console.log( 'loading image for hotspot',src);
+
+    var loader = new THREE.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+    loader.load( src, function ( texture ) {
+      innerMaterial.map = texture;
+      innerMaterial.needsUpdate = true;
+    });
+
+  }
 
   return hotspot;
+
 };
 
 /**
@@ -374,27 +390,27 @@ HotspotRenderer.prototype.blur_ = function(id) {
 HotspotRenderer.prototype.down_ = function(id) {
   // Become active.
   var hotspot = this.hotspots[id];
-  var outer = hotspot.getObjectByName('inner');
+  var inner = hotspot.getObjectByName('inner');
 
-  this.tween = new TWEEN.Tween(outer.material.color).to(ACTIVE_COLOR, ACTIVE_DURATION)
+  this.tween = new TWEEN.Tween(inner.material.color).to(ACTIVE_COLOR, ACTIVE_DURATION)
       .start();
 };
 
 HotspotRenderer.prototype.up_ = function(id) {
   // Become inactive.
   var hotspot = this.hotspots[id];
-  var outer = hotspot.getObjectByName('inner');
+  var inner = hotspot.getObjectByName('inner');
 
-  this.tween = new TWEEN.Tween(outer.material.color).to(INACTIVE_COLOR, ACTIVE_DURATION)
+  this.tween = new TWEEN.Tween(inner.material.color).to(INACTIVE_COLOR, ACTIVE_DURATION)
       .start();
 };
 
 HotspotRenderer.prototype.setOpacity_ = function(id, opacity) {
   var hotspot = this.hotspots[id];
-  var outer = hotspot.getObjectByName('outer');
+  //var outer = hotspot.getObjectByName('outer');
   var inner = hotspot.getObjectByName('inner');
 
-  outer.material.opacity = opacity * MAX_OUTER_OPACITY;
+  //outer.material.opacity = opacity * MAX_OUTER_OPACITY;
   inner.material.opacity = opacity * MAX_INNER_OPACITY;
 };
 
