@@ -1,6 +1,6 @@
 import '../../../node_modules/three/src/polyfills.js';
 
-export { WebGLRenderer } from '../../../node_modules/three/src/renderers/WebGLRenderer.js';
+export { WebGLRenderer } from '../../../../three.js/src/renderers/WebGLRenderer.js';
 export { Scene } from '../../../node_modules/three/src/scenes/Scene.js';
 export { Mesh } from '../../../node_modules/three/src/objects/Mesh.js';
 export { VideoTexture } from '../../../node_modules/three/src/textures/VideoTexture.js';
