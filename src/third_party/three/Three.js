@@ -1,5 +1,6 @@
 import '../../../node_modules/three/src/polyfills.js';
 
+export { PlaneGeometry } from '../../../node_modules/three/src/geometries/PlaneGeometry.js';
 export { WebGLRenderer } from '../../../node_modules/three/src/renderers/WebGLRenderer.js';
 export { Scene } from '../../../node_modules/three/src/scenes/Scene.js';
 export { Mesh } from '../../../node_modules/three/src/objects/Mesh.js';

@@ -251,7 +251,7 @@ WorldRenderer.prototype.init_ = function() {
   this.scene = this.createScene_();
   this.scene.add(this.camera.parent);
 
-
+  this.addImage( 'examples/img/rick.jpg', 0, 0, 0.5, 0.3, 0.7 );
   // Watch the resize event.
   window.addEventListener('resize', this.onResize_.bind(this));
 
@@ -326,5 +326,26 @@ WorldRenderer.prototype.onContextMenu_ = function(e) {
   return false;
 };
 
+WorldRenderer.prototype.addImage = function ( src, pitch, yaw, width, height, distance ) {
+  var self = this;
+  var loader = new THREE.TextureLoader();
+  loader.crossOrigin = 'anonymous';
+  loader.load( src, function ( texture ) {
+
+    var imageObject = new THREE.Mesh(
+      new THREE.PlaneGeometry( width, height ),
+      new THREE.MeshBasicMaterial({ map: texture })
+    );
+
+    var quat = new THREE.Quaternion();
+    quat.setFromEuler(new THREE.Euler(THREE.Math.degToRad(pitch), THREE.Math.degToRad(yaw), 0));
+
+    imageObject.position.z = -distance;
+    imageObject.position.applyQuaternion(quat);
+    imageObject.lookAt(new THREE.Vector3());
+
+    self.scene.add( imageObject );
+  });
+}
 
 module.exports = WorldRenderer;
