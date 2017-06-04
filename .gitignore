@@ -1,7 +1,0 @@
-.gitignore
-.DS_Store
-*.swp
-*.swo
-*.iml
-.idea
-node_modules

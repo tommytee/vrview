@@ -199,7 +199,7 @@ WorldRenderer.prototype.didLoadFail_ = function(message) {
 WorldRenderer.prototype.setDefaultYaw_ = function(angleRad) {
   // Rotate the camera parent to take into account the scene's rotation.
   // By default, it should be at the center of the image.
-  this.camera.parent.rotation.y = (Math.PI / 2.0) + angleRad;
+  this.camera.parent.rotation.y = (Math.PI / 2.0) + angleRad - this.controls.getVRDisplay().theta_;
 };
 
 /**
